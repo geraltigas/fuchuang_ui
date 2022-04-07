@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-import Test from "./components/Test";
+import Show from "./components/Show";
+import Tree from "./components/Tree";
 
 function App() {
   return (
     <div className="App">
-      <Test/>
+      <Tree /><Show />
     </div>
   );
 }
