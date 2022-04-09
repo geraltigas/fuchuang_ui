@@ -1,24 +1,22 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Show from "./components/Show";
+import {JSON, objectToJSON} from "./utils/parse";
 import Tree from "./components/Tree";
-import {objectToJSON, parse} from "./utils/parse";
 
-
-const data = objectToJSON(require("../src/static/category.json"));
-const {nodes,edges} = parse(data);
+const dataG = objectToJSON(require("./static/category.json"),null as any as JSON,null as any as number);
 
 function App() {
 
-    useEffect(() => {
-        console.log(nodes,edges);
-    },[])
+    const [dataClickedG,setDataClickedG] = useState<JSON>(new JSON('所有商品',0,4412335,598193,new Array<JSON>(),null as any as JSON, null as any as number));
 
   return (
     <div className="App">
-      <Tree data={data}/><Show />
+      <Tree setDataClickedG={setDataClickedG}/><Show dataClickedG = {dataClickedG}/>
     </div>
   );
 }
+
+export {dataG};
 
 export default App;
