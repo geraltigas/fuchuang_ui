@@ -5,6 +5,8 @@ class JSON {
     all_count:number;
     cur_count:number;
     children: JSON[]
+    style: { label: {value: string}; } | undefined;
+    reflect: JSON|undefined;
     constructor(name:string, level:number, all_count:number,cur_count:number,sons:JSON[]) {
         this.children = sons;
         this.id = name;
@@ -57,5 +59,5 @@ const parse = (json: JSON) => {
 }
 
 export {parse,objectToJSON};
-export type { JSON, Node, Edge };
+export { JSON };
 

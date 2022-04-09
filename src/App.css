@@ -1,3 +1,4 @@
+@import '~antd/dist/antd.css';
 .App {
   display: flex;
   flex-direction: row;
@@ -7,10 +8,18 @@
   width: 50%;
   height: 100%;
   border: 1px solid black;
+  z-index: 1;
 }
 
 #Show {
   width: 50%;
   height: 100%;
   border: 1px solid black;
+}
+
+.Steps {
+  position: absolute;
+  width: 50%;
+  padding: 20px;
+  z-index: 100;
 }

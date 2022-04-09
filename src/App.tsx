@@ -1,24 +1,25 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import Show from "./components/Show";
 import Tree from "./components/Tree";
-import {objectToJSON, parse} from "./utils/parse";
+import {JSON, objectToJSON, parse} from "./utils/parse";
 
+const dataG = objectToJSON(require("../src/static/category.json"));
 
-const data = objectToJSON(require("../src/static/category.json"));
-const {nodes,edges} = parse(data);
-
-function App() {
+const App = () => {
 
     useEffect(() => {
-        console.log(nodes,edges);
     },[])
+
+    const [clickedData,setClickedData] = useState<JSON>(dataG);
 
   return (
     <div className="App">
-      <Tree data={data}/><Show />
+      <Tree setClickedData={setClickedData}/><Show />
     </div>
   );
 }
+
+export { dataG }
 
 export default App;
