@@ -10,27 +10,52 @@ interface TreeProps {
     setClickedData:(json:JSON) => void;
 }
 
-const type = 'dendrogram';
+const type = 'compactBox';
 
 
 const options = {
-        direction: 'TB', // H / V / LR / RL / TB / BT
-        nodeSep: 40,
-        rankSep: 100,
-};
+    direction: 'LR',
+    getId: function getId(d: { id: any; }) {
+        return d.id;
+    },
+    getHeight: function getHeight() {
+        return 26;
+    },
+    getWidth: function getWidth() {
+        return 26;
+    },
+    getVGap: function getVGap() {
+        return 26;
+    },
+    getHGap: function getHGap() {
+        return 100;
+    }
+}
 
 interface OnClickBehaviorProps {
 setNowAt: (json:JSON) => void;
 setStack: (json:JSON[]) => void;
 stack: JSON[];
 setCurrent: (index:number) => void;
-current: number;
 }
 
 let currentN  = 0;
+let stackN:JSON[] = [];
+let custom = {
+    size: 30,
+    stroke: '#1890ff',
+    fill: '#1890ff',
+    fillOpacity: 0.2,
+}
+let customR = {
+    size: 50,
+    stroke: 'blue',
+    fill: 'blue',
+    fillOpacity: 0.2,
+}
 
 const OnClickBehavior = (props:OnClickBehaviorProps) => {
-    const { setNowAt,setStack,stack,setCurrent,current } = props;
+    const { setNowAt,setStack,setCurrent } = props;
     const { graph, apis } = useContext(GraphinContext);
 
     useEffect(() => {
@@ -39,11 +64,23 @@ const OnClickBehavior = (props:OnClickBehaviorProps) => {
             const model = node.getModel() as any as JSON;
             apis.focusNodeById(model.id);
             setNowAt(model.reflect!);
-            if (stack[stack.length-1].id === model.reflect!.id) {
+            let isOld:boolean = false;
+            let notOther:boolean = true;
+            stackN.forEach((json:JSON) => {
+                if (json.id === model.id) isOld = true;
+            })
+            stackN[stackN.length-1].children.forEach((json:JSON,index:number) => {
+                if (json.id === model.id) notOther = false;
+            })
+            if (isOld || notOther) {
+                if (isOld) {
+                    console.log('isOld')
+                }
             }else {
-                stack.splice(currentN+1,stack.length)
-                    stack.push(model.reflect!)
-                    setStack([...stack]);
+                stackN.splice(currentN+1,stackN.length)
+                    stackN.push(model.reflect!)
+                    setStack([...stackN]);
+                    stackN = [...stackN];
                     setCurrent(currentN+1);
                     currentN++;
             }
@@ -64,8 +101,9 @@ const getNow = (now:JSON) => {
         temp.reflect = json;
         temp.style = {
             label: {
-                value: temp.id
-            }
+                value: temp.id,
+            },
+            keyshape: custom
         }
         sons.push(temp);
     })
@@ -73,10 +111,34 @@ const getNow = (now:JSON) => {
     temp.reflect = now
     temp.style = {
         label: {
-            value: temp.id
-        }
+            value: temp.id,
+        },
+        keyshape: customR
     }
     return temp
+}
+
+const getNowFromStack = (current:number,stack:JSON[]):JSON => {
+    if (stack.length === 0) return null as any as JSON;
+    let temp:JSON[] = new Array<JSON>();
+
+    for (let i = 0; i <= current ; i++) {
+        temp.push(getNow(stack[i]))
+    }
+
+    for (let i = 0; i < temp.length-1; i++) {
+        let head = temp[i];
+        let rear = temp[i+1];
+
+        for (let k = 0; k < head.children.length ; k++) {
+            if (head.children[k].id === rear.id) {
+                head.children[k] = rear;
+                break;
+            }
+        }
+    }
+    return temp[0];
+
 }
 
 const Tree = (props:TreeProps) => {
@@ -84,16 +146,18 @@ const Tree = (props:TreeProps) => {
     const {setClickedData} = props
 
     const [nowAt,setNowAt] = useState<JSON>(dataG);
-    const [stack,setStack] = useState<JSON[]>(new Array<JSON>())
+    const [stack,setStack] = useState<JSON[]>([dataG])
     const [current,setCurrent] = useState<number>(0);
-
-    useEffect(() => {
-        setStack([...stack,dataG]);
-    },[])
 
     useEffect(() => {
         setClickedData(nowAt)
     },[nowAt])
+
+    useEffect(() =>{
+        stackN = [dataG]
+    },[])
+
+    console.log('stack',stack)
 
     const onChange = (current:number) => {
         setCurrent(current);
@@ -102,7 +166,9 @@ const Tree = (props:TreeProps) => {
         if (currentN !== stack.length-1) {
             stack.splice(currentN+1,stack.length);
         }
+        console.log(stack)
         setStack(stack)
+        stackN = [...stack]
     }
 
     return (
@@ -116,8 +182,8 @@ const Tree = (props:TreeProps) => {
                     })}
                 </Steps>
             </div>
-            <Graphin data={getNow(nowAt) as any} layout={{type, ...options}} fitView>
-                <OnClickBehavior stack={stack} setStack={setStack} setNowAt={setNowAt} setCurrent={setCurrent} current={current}/>
+            <Graphin data={getNowFromStack(current,stack) as any} layout={{type, ...options}} fitView>
+                <OnClickBehavior stack={stack} setStack={setStack} setNowAt={setNowAt} setCurrent={setCurrent}/>
             </Graphin>
         </div>
     )

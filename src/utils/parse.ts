@@ -5,7 +5,7 @@ class JSON {
     all_count:number;
     cur_count:number;
     children: JSON[]
-    style: { label: {value: string}; } | undefined;
+    style: { label: {value: string}; keyshape:{};} | undefined;
     reflect: JSON|undefined;
     constructor(name:string, level:number, all_count:number,cur_count:number,sons:JSON[]) {
         this.children = sons;
