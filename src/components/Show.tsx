@@ -3,7 +3,8 @@ import { dataG } from "../App";
 import { Card, Col, Row, Table } from 'antd';
 import { JSON, objectToJSON, parse } from "../utils/parse";
 import DemoLine from "./charts/DemoLine";
-import DemoPie from "./charts/DemoPie";
+import PriceAbnormal from "./charts/PriceAbnormal";
+import SalesAbnormal from "./charts/SalesAbnormal";
 import DemoHistogram from "./charts/Histogram";
 import './Show.css';
 interface ShowProps {
@@ -45,14 +46,12 @@ const Show = (props: ShowProps) => {
                 <Table dataSource={data} columns={columns} bordered={true} pagination={false} />
             </div>
             <div className="charts" >
-
                 <Row gutter={[24, 24]}>
                     <Col span={12}>
                         <Card bordered={true}>
                             <h1>价格信息</h1>
                             <DemoHistogram />
                         </Card>
-
                     </Col>
                     <Col span={12}>
                         <Card bordered={true} >
@@ -65,13 +64,13 @@ const Show = (props: ShowProps) => {
                     <Col span={12}>
                         <Card bordered={true}>
                             <h1>价格异常商品</h1>
-                            <DemoPie />
+                            <PriceAbnormal />
                         </Card>
                     </Col>
                     <Col span={12}>
                         <Card bordered={true}>
                             <h1>销量异常商品</h1>
-                            <DemoPie />
+                            <SalesAbnormal />
                         </Card>
                     </Col>
                 </Row>

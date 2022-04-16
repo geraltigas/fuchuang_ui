@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Pie } from '@ant-design/plots';
 
-const DemoPie = () => {
+const PriceAbnormal = () => {
   const data = [
     {
       type: '分类一',
@@ -54,4 +54,4 @@ const DemoPie = () => {
   return <Pie {...config} />;
 };
 
-export default DemoPie;
+export default PriceAbnormal;
