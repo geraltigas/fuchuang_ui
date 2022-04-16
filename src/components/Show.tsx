@@ -42,7 +42,7 @@ const Show = (props: ShowProps) => {
         <div id={'Show'}>
             <div className="nodeInfo">
                 <h1>节点基本信息</h1>
-                <Table dataSource={data} columns={columns} bordered={true} pagination={false} />;
+                <Table dataSource={data} columns={columns} bordered={true} pagination={false} />
             </div>
             <div className="charts" >
 
