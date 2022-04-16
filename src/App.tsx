@@ -15,7 +15,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Tree setClickedData={setClickedData}/><Show />
+      <Tree setClickedData={setClickedData}/><Show clickedData={clickedData}/>
     </div>
   );
 }

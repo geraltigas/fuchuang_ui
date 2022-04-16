@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ant-design/charts": "^1.3.6",
     "@antv/graphin": "^2.5.2",
     "@antv/graphin-components": "^2.4.0",
     "@antv/graphin-icons": "^1.0.0",
+    "@antv/xflow-extension": "^1.0.43",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.4",
     "@testing-library/user-event": "^13.5.0",
