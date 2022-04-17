@@ -100,7 +100,7 @@ const OnClickBehavior = (props: OnClickBehaviorProps) => {
 const getNow = (now: JSON) => {
     let sons: JSON[] = new Array<JSON>();
     now.children.forEach((json: JSON) => {
-        let temp = new JSON(json.id, json.level, json.all_count, json.cur_count, new Array<JSON>())
+        let temp = new JSON(json.id, json.level, json.all_count, json.cur_count, new Array<JSON>(),json.abno_sales_count,json.abno_sales_count,json.abno_price_items,json.abno_sales_items)
         temp.reflect = json;
         temp.style = {
             label: {
@@ -110,7 +110,7 @@ const getNow = (now: JSON) => {
         }
         sons.push(temp);
     })
-    let temp = new JSON(now.id, now.level, now.all_count, now.cur_count, sons);
+    let temp = new JSON(now.id, now.level, now.all_count, now.cur_count, sons,now.abno_sales_count,now.abno_sales_count,now.abno_price_items,now.abno_sales_items);
     temp.reflect = now
     temp.style = {
         label: {
@@ -118,7 +118,6 @@ const getNow = (now: JSON) => {
         },
         keyshape: customR
     }
-    console.log('getNow:', temp);
     return temp
 
 }
@@ -129,7 +128,6 @@ const getNowFromStack = (current: number, stack: JSON[]): JSON => {
     for (let i = 0; i <= current; i++) {
         temp.push(getNow(stack[i]))
     }
-
     for (let i = 0; i < temp.length - 1; i++) {
         let head = temp[i];
         let rear = temp[i + 1];
@@ -141,7 +139,6 @@ const getNowFromStack = (current: number, stack: JSON[]): JSON => {
             }
         }
     }
-    console.log('getNowFromStack:', temp[0]);
     return temp[0];
 
 }
@@ -162,8 +159,6 @@ const Tree = (props: TreeProps) => {
         stackN = [dataG]
     }, [])
 
-    console.log('stack', stack)
-
     const onChange = (current: number) => {
         setCurrent(current);
         currentN = current;
@@ -171,7 +166,6 @@ const Tree = (props: TreeProps) => {
         if (currentN !== stack.length - 1) {
             stack.splice(currentN + 1, stack.length);
         }
-        console.log(stack)
         setStack(stack)
         stackN = [...stack]
     }
@@ -187,9 +181,11 @@ const Tree = (props: TreeProps) => {
                     })}
                 </Steps>
             </div>
-            <Graphin data={getNowFromStack(current, stack) as any} layout={{ type, ...options }} fitView>
-                <OnClickBehavior stack={stack} setStack={setStack} setNowAt={setNowAt} setCurrent={setCurrent} />
-            </Graphin>
+            {/* <div className={"graphin"}> */}
+                <Graphin data={getNowFromStack(current, stack) as any} layout={{ type, ...options }} fitView>
+                    <OnClickBehavior stack={stack} setStack={setStack} setNowAt={setNowAt} setCurrent={setCurrent} />
+                </Graphin>
+            {/* </div> */}
         </div>
     )
 }
