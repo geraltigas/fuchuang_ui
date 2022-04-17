@@ -5,14 +5,14 @@
 }
 
 #Tree {
-  width: 45%;
+  width: 46%;
   height: 100%;
   border: 1px solid black;
   z-index: 1;
 }
 
 #Show {
-  width: 55%;
+  width: 54%;
   height: 100%;
   border: 1px solid black;
 }
