@@ -66,27 +66,56 @@ const OnClickBehavior = (props: OnClickBehaviorProps) => {
             setNowAt(model.reflect!);
             let isOld: boolean = false;
             let notOther: boolean = true;
+            let isLastAndOther: boolean = false;
             stackN.forEach((json: JSON) => {
                 if (json.id === model.id) isOld = true;
             })
             stackN[stackN.length - 1].children.forEach((json: JSON, index: number) => {
                 if (json.id === model.id) notOther = false;
             })
-            if (isOld || notOther) {
-                if (isOld) {
-                    console.log('isOld')
+
+            let last:JSON = stackN[stackN.length-1]
+            let isBro:boolean = false;
+
+            console.log(stackN[stackN.length-1])
+
+            if (stackN.length > 3) {
+                stackN[stackN.length-2].children.forEach((json: JSON, index: number) => {
+                    if (json.id === last.id && json.id !== model.id) isBro = true;
+                })
+            }
+
+            if (stackN[stackN.length-1].level === model.level && isBro) {  //
+                isLastAndOther = true;
+            }
+
+            if (!isLastAndOther) {
+                if (isOld || notOther) {
+                    if (isOld) {
+                        console.log('isOld')
+                    }
+                    if (notOther) {
+                        console.log('notOther')
+                    }
+                } else {
+                    stackN.splice(currentN + 1, stackN.length)
+                    stackN.push(model.reflect!)
+                    setStack([...stackN]);
+                    stackN = [...stackN];
+                    setCurrent(currentN + 1);
+                    currentN++;
                 }
-                if (notOther) {
-                    console.log('notOther')
-                }
-            } else {
+            }else {
+                console.log("isLastAndOther")
+                stackN.pop()
                 stackN.splice(currentN + 1, stackN.length)
                 stackN.push(model.reflect!)
                 setStack([...stackN]);
                 stackN = [...stackN];
-                setCurrent(currentN + 1);
-                currentN++;
+                setCurrent(currentN);
             }
+
+
 
         };
         graph.on('node:click', handleClick);
