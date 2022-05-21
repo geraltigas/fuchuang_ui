@@ -1,3 +1,4 @@
+import { threadId } from "worker_threads";
 
 class JSON {
     id: string;
@@ -11,10 +12,19 @@ class JSON {
     abno_price_count: number;
     abno_price_items: Item[];
     abno_sales_items: Item[];
+    price_mean:number;
+    price_std:number;
+    price_high_std:number;
+    price_t:number;
+    amount_mean:number;
+    amount_std:number;
+    amount_high_std:number;
+    amount_t:number;
     constructor(name: string, level: number, all_count: number, cur_count: number, sons: JSON[], abno_price_count: number,
-        abno_sales_count: number,
-        abno_price_items: Item[],
-        abno_sales_items: Item[]) {
+        abno_sales_count: number, abno_price_items: Item[], abno_sales_items: Item[],
+        price_mean:number, price_std:number,price_high_std:number, price_t:number, amount_mean:number, amount_std:number,
+        amount_high_std:number,
+        amount_t:number) {
         this.children = sons;
         this.id = name;
         this.level = level;
@@ -24,6 +34,14 @@ class JSON {
         this.abno_sales_count = abno_sales_count;
         this.abno_price_items = abno_price_items;
         this.abno_sales_items = abno_sales_items;
+        this.price_mean=price_mean;
+        this.price_std=price_std;
+        this.price_high_std=price_high_std;
+        this.price_t=price_t;
+        this.amount_mean=amount_mean;
+        this.amount_std=amount_std;
+        this.amount_high_std=amount_high_std;
+        this.amount_t=amount_t;
     }
 }
 class Item {
@@ -74,10 +92,14 @@ const objectToJSON = (input: any): JSON => {
             sons.push(son);
         })
 
-        let now: JSON = new JSON(input.name, input.level, input.all_count, input.cur_count, sons, input.abno_price_count, input.abno_sales_count,priceItems, salesItems);
+        let now: JSON = new JSON(input.name, input.level, input.all_count, input.cur_count, sons, input.abno_price_count, input.abno_sales_count,priceItems, salesItems,
+            input.price_mean.toFixed(2),input.price_std.toFixed(2),input.price_high_std.toFixed(2),input.price_t.toFixed(2),input.amount_mean.toFixed(2),input.amount_std.toFixed(2),
+            input.amount_high_std.toFixed(2),input.amount_t.toFixed(2));
         return now;
     } else {
-        let now: JSON = new JSON(input.name, input.level, input.all_count, input.cur_count, new Array<JSON>(), input.abno_price_count, input.abno_sales_count, priceItems, salesItems);
+        let now: JSON = new JSON(input.name, input.level, input.all_count, input.cur_count, new Array<JSON>(), input.abno_price_count, input.abno_sales_count, priceItems, salesItems,
+        input.price_mean.toFixed(2),input.price_std.toFixed(2),input.price_high_std.toFixed(2),input.price_t.toFixed(2),input.amount_mean.toFixed(2),input.amount_std.toFixed(2),
+            input.amount_high_std.toFixed(2),input.amount_t.toFixed(2));
         return now;
     }
 }
