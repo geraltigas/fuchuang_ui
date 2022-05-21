@@ -143,7 +143,8 @@ const OnClickBehavior = (props: OnClickBehaviorProps) => {
 const getNow = (now: JSON) => {
     let sons: JSON[] = new Array<JSON>();
     now.children.forEach((json: JSON) => {
-        let temp = new JSON(json.id, json.level, json.all_count, json.cur_count, new Array<JSON>(),json.abno_sales_count,json.abno_sales_count,json.abno_price_items,json.abno_sales_items)
+        let temp = new JSON(json.id, json.level, json.all_count, json.cur_count, new Array<JSON>(),json.abno_sales_count,json.abno_sales_count,json.abno_price_items,json.abno_sales_items,json.price_mean,json.price_std,json.price_high_std,json.price_t,
+        json.amount_mean,json.amount_std,json.amount_high_std,json.amount_t)
         temp.reflect = json;
         temp.style = {
             label: {
@@ -153,7 +154,8 @@ const getNow = (now: JSON) => {
         }
         sons.push(temp);
     })
-    let temp = new JSON(now.id, now.level, now.all_count, now.cur_count, sons,now.abno_sales_count,now.abno_sales_count,now.abno_price_items,now.abno_sales_items);
+    let temp = new JSON(now.id, now.level, now.all_count, now.cur_count, sons,now.abno_sales_count,now.abno_sales_count,now.abno_price_items,now.abno_sales_items,now.price_mean,now.price_std,now.price_high_std,now.price_t,
+        now.amount_mean,now.amount_std,now.amount_high_std,now.amount_t)
     temp.reflect = now
     temp.style = {
         label: {
