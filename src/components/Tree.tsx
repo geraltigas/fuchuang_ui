@@ -89,20 +89,32 @@ const OnClickBehavior = (props: OnClickBehaviorProps) => {
                 isLastAndOther = true;
             }
 
+
             if (!isLastAndOther) {
                 if (isOld || notOther) {
                     if (isOld) {
                         console.log('isOld')
+                        stackN.splice(model.level+1, stackN.length)
+                        setCurrent(model.level);
+                        currentN = model.level;
+                        setStack([...stackN]);
                     }
                     if (notOther) {
-                        console.log('notOther')
+                        console.log("notOther")
+                        // let temp = model
+                        // stackN = []
+                        // while(temp != null) {
+                        //     stackN.unshift(temp)
+                        //     temp = temp.parent
+                        // }
+                        // setCurrent(model.level);
+                        // currentN = model.level;
+                        // setStack([...stackN]);
                     }
                 } else {
-                    stackN.splice(currentN + 1, stackN.length)
                     stackN.push(model.reflect!)
                     setStack([...stackN]);
-                    stackN = [...stackN];
-                    setCurrent(currentN + 1);
+                    setCurrent(currentN+1);
                     currentN++;
                 }
             }else {
@@ -114,6 +126,8 @@ const OnClickBehavior = (props: OnClickBehaviorProps) => {
                 stackN = [...stackN];
                 setCurrent(currentN);
             }
+
+
 
 
 
